@@ -1,6 +1,7 @@
 import {
   hasStringify
 } from './common.js'
+
 class CustomStorage {
   constructor() {
     if (navigator && navigator.storage) {

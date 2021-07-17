@@ -7,7 +7,6 @@ export function isSymbol(val) {
   return typeof val === 'symbol'
 }
 
-
 /**
  * 判断当前值是否能够呗JSON.stringify识别
  * @param data 需要判断的值
@@ -28,6 +27,7 @@ export function hasStringify(data) {
 
   return true
 }
+
 
 export default {
   hasStringify

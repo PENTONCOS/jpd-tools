@@ -1,15 +1,33 @@
 {
-  "name": "jpd-utils",
-  "version": "1.0.0",
+  "name": "jpd-tools",
+  "version": "1.0.0-beta0",
   "description": "Self use utils.",
-  "main": "index.js",
-  "dependencies": {
-    "typescript": "^4.3.5"
-  },
-  "type": "module",
-  "devDependencies": {},
+  "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "cross-env NODE_ENV=production webpack --config ./webpack.config.js",
+    "start": " cross-env NODE_ENV=development webpack-dev-server --config ./webpack.config.js"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.10.5",
+    "@babel/preset-env": "^7.10.4",
+    "@babel/plugin-transform-runtime": "^7.10.5",
+    "@babel/polyfill": "^7.10.4",
+    "@babel/runtime-corejs3": "^7.10.5",
+    "@babel/runtime": "^7.10.5",
+    "babel-loader": "^8.1.0",
+    "clean-webpack-plugin": "^3.0.0",
+    "html-webpack-plugin": "^4.3.0",
+    "autoprefixer": "^9.8.5",
+    "css-loader": "^4.0.0",
+    "postcss-loader": "^3.0.0",
+    "style-loader": "^1.2.1",
+    "sass-loader": "^9.0.2",
+    "node-sass": "^4.14.1",
+    "webpack": "^4.44.0",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0",
+    "uglifyjs-webpack-plugin": "^2.2.0",
+    "cross-env": "^7.0.2"
   },
   "repository": {
     "type": "git",
@@ -19,9 +37,9 @@
     "utils"
   ],
   "author": "jiapandong",
+  "email": "515327098@qq.com",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/PENTONCOS/jpd-utils/issues"
-  },
-  "homepage": "https://github.com/PENTONCOS/jpd-utils#readme"
+  }
 }
