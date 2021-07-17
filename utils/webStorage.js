@@ -3,6 +3,15 @@ import {
 } from './common.js'
 class CustomStorage {
   constructor() {
+    if (navigator && navigator.storage) {
+
+      // 判断navigator里是否有storage, 再去看使用缓存情况
+      navigator.storage.estimate().then(estimate => {
+        this.useage = estimate.useage // 总大小
+        this.quota = estimate.quota // 使用大小
+      });
+    }
+
     if (!window) {
       throw new Error('当前环境非浏览器，无法消费全局window实例。')
     }
@@ -13,6 +22,50 @@ class CustomStorage {
       throw new Error('当前环境非无法使用sessionStorage')
     }
   }
+  /**
+   * 获取当前清除存储空间，并且进行排序
+   */
+  getClearStorage() {
+    const keys = Object.keys(this.readStorage)
+    const db = [];
+    keys.forEach(name => {
+      const item = this.getItem(name)
+      if (item.timestamp) {
+        db.push({
+          key: name,
+          data: item
+        })
+      }
+    })
+    return db.sort((a, b) => {
+      return a.data.timestamp - b.data.timestamp
+    })
+  }
+
+  /**
+ * 容量清理，直到满足存储大小为止
+ */
+  detectionStorageContext(currentSize) {
+    if (this.usage + currentSize >= this.quota) {
+      const storage = this.getClearStorage()
+      for (let { key, data } of storage) {
+        // 如果满足要求就跳出，还不够就继续清除。
+        if (this.usage + currentSize < this.quota) break
+        // 刷新容量大小
+        this.removeItem(key)
+        // 刷新容量
+        if (navigator && navigator.storage) {
+
+          // 判断navigator里是否有storage, 再去看使用缓存情况
+          navigator.storage.estimate().then(estimate => {
+            this.useage = estimate.useage // 总大小
+            this.quota = estimate.quota // 使用大小
+          });
+        }
+      }
+    }
+  }
+
   /**
    * 获取所有key
    * @returns 回storage当中所有key集合
@@ -66,6 +119,7 @@ class CustomStorage {
    * @param value 设置当前存储value
    */
   setItem(key, value) {
+    this.detectionStorageContext()
     if (hasStringify(value)) {
       const saveData = {
         timestamp: new Date().getTime(),
@@ -84,8 +138,12 @@ class CustomStorage {
    * @returns 存储数据
    */
   getItem(key) {
-    const content = JSON.parse(this.readStorage.getItem(key))
-    return content?.data || null
+    const content = JSON.parse(this.readStorage.getItem(key));
+    if ((content === null || content === void 0 ? void 0 : content.timestamp) && new Date().getTime() - content.timestamp >= this.config.timeout) {
+      this.removeItem(key);
+      return null;
+    }
+    return (content === null || content === void 0 ? void 0 : content.data) || null;
   }
 
   /**
