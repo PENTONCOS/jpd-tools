@@ -28,3 +28,7 @@ export function hasStringify(data) {
 
   return true
 }
+
+export default {
+  hasStringify
+}
