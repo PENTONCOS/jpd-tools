@@ -5,11 +5,11 @@
  * @param {*} fileName 下载文件名
  */
 
-export const downloadFile = (
-  data,
+function downloadFile(
+  data, // blob文件流
   type = "vnd.ms-excel", // vnd.ms-excel || zip || ...
   fileName
-) => {
+) {
   const blob = new Blob([data], { type: `application/${type}` });
   const url = window.URL.createObjectURL(blob);
   const a = document.createElement("a");
@@ -20,3 +20,5 @@ export const downloadFile = (
   a.click();
   window.URL.revokeObjectURL(url);
 }
+
+export default downloadFile;
