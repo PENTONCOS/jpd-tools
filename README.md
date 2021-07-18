@@ -12,11 +12,11 @@ yarn add jpd-tools
 现支持方法如下：
 - **WebStorage**: 操作本地存储
   - 存入数据: customStorage.setItem(key, value); 
-  - 获取数据: getItem(key); 
-  - 移除数据: removeItem(key); 
-  - 改变数据: changeItem(key, onChange, baseValue);
-  - 清除所有数据: clearAll(); 
-  - 返回当前存储库大小: size();
+  - 获取数据: customStorage.getItem(key); 
+  - 移除数据: customStorage.removeItem(key); 
+  - 改变数据: customStorage.changeItem(key, onChange, baseValue);
+  - 清除所有数据: customStorage.clearAll(); 
+  - 返回当前存储库大小: customStorage.size();
 
   ```javascript
   // store.js
@@ -36,4 +36,15 @@ yarn add jpd-tools
   // 存入数据
   customStorage.setItem(key, value);
   ```
-   
+
+- **downloadFile**: 下载文件
+  ```javascript
+  import { downloadFile } from 'jpd-tools';
+  /**
+  * 下载接口返回的文件流
+  * @param {*} data blob文件流
+  * @param {*} type 文件类型
+  * @param {*} fileName 下载文件名
+  */
+  downloadFile(data, type, fileName);
+  ```
